@@ -1,20 +1,24 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using ProyectoGemini.Interfaces;
 using ProyectoGemini.Models;
+using ProyectoGemini.Repositories;
 
 namespace ProyectoGemini.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private IChatbotService _chatbotService;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(IChatbotService chatbotService)
     {
-        _logger = logger;
+        _chatbotService = chatbotService;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
+        string response = await _chatbotService.GetChatbotResponseAsync("Dame un resumen de 100 palabras de la pelicula Interestellar");
+        ViewBag.chatbotAnswer = response;
         return View();
     }
 

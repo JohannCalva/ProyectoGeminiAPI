@@ -1,7 +1,11 @@
+using ProyectoGemini.Interfaces;
+using ProyectoGemini.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<IChatbotService, GeminiRepository>(); //Se inicia una sola vez el Gemini Repository Es la dependencia
 
 var app = builder.Build();
 
