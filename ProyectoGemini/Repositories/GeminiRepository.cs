@@ -36,9 +36,18 @@ namespace ProyectoGemini.Repositories
             var content = new StringContent(requestJson, Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PostAsync(url, content);
-            var answer = await response.Content.ReadAsStringAsync();
 
-            return answer;
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"Error en la solicitud: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}");
+
+            var answer = await response.Content.ReadFromJsonAsync<GeminiResponse>();
+
+            var responseText = answer.candidates
+                        .SelectMany(candidate => candidate.content.parts)
+                        .Select(part => part.text)
+                        .FirstOrDefault() ?? "No se pudo obtener respuesta del chatbot.";
+
+            return responseText;
         }
 
         public Task<bool> SaveResponseInDatabase(string chatbotPrompt, string chatBotResponse)

@@ -1,8 +1,5 @@
 ﻿namespace ProyectoGemini.Models
 {
-    public class GeminiModels
-    {
-    }
     public class GeminiRequest
     {
         public List<GeminiContent> contents { get; set; }
@@ -15,4 +12,12 @@
     {
         public string text { get; set; }
     }
+    public class GeminiResponse
+    {
+        public List<GeminiCandidate> candidates { get; set; }
+    }
+    public class GeminiCandidate
+    {
+        public GeminiContent content { get; set; }
+    }   
 }
